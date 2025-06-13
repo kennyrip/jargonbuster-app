@@ -1,6 +1,3 @@
-// Filename: /pages/api/simplify.js
-// This is the serverless backend that connects to the Gemini API.
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
@@ -17,7 +14,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: 'Invalid input text provided.' });
   }
 
-  // This is the prompt sent to the AI. It's engineered to be effective.
   const prompt = `
     Your task is to act as a "Text Simplifier".
     You will receive a piece of text that may contain complex jargon, legal terms, or technical language.
@@ -51,7 +47,7 @@ export default async function handler(req, res) {
   };
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -69,8 +65,6 @@ export default async function handler(req, res) {
       const simplifiedText = data.candidates[0].content.parts[0].text;
       res.status(200).json({ simplifiedText });
     } else {
-      // This handles cases where the API returns a valid response, but no content.
-      // E.g., safety settings blocked the response.
       throw new Error("The model did not return any content. The input may have been flagged as unsafe.");
     }
 
